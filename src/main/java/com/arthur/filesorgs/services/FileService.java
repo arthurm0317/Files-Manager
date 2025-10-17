@@ -5,7 +5,7 @@ import com.arthur.filesorgs.repositories.FileRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
-
+import java.sql.SQLException;
 import java.util.List;
 
 @Service
@@ -13,6 +13,9 @@ import java.util.List;
 public class FileService {
     @Autowired
     private FileRepository repository;
+
+    public FileService() throws SQLException {
+    }
 
     public List<File> findAll(){
         return repository.findAll();

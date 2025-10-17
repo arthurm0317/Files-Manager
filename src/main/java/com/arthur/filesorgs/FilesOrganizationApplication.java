@@ -1,13 +1,16 @@
 package com.arthur.filesorgs;
 
-import com.arthur.filesorgs.controllers.UserController;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import java.sql.SQLException;
+
 @SpringBootApplication
 public class FilesOrganizationApplication {
-	public static void main(String[] args) {
+
+	public static void main(String[] args) throws SQLException {
+
 		SpringApplication.run(FilesOrganizationApplication.class, args);
 
 	}

@@ -11,10 +11,10 @@ import java.util.UUID;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private UUID Id;
+    private String Id;
     private String name;
     private String email;
-    @JsonIgnore
+
     private  String password;
 
     public User() {
@@ -26,7 +26,8 @@ public class User {
         this.password = password;
     }
 
-    public UUID getId() {
+
+    public String getId() {
         return Id;
     }
 
@@ -53,6 +54,10 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public boolean comparePassword(String password){
+        return Objects.equals(this.password, password);
     }
 
     @Override

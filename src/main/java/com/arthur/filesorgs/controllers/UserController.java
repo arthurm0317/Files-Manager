@@ -1,6 +1,7 @@
 package com.arthur.filesorgs.controllers;
 
 
+
 import com.arthur.filesorgs.entities.User;
 import com.arthur.filesorgs.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,8 +13,10 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:5173")
 @RequestMapping(value = "/users")
 public class UserController {
 
@@ -30,6 +33,17 @@ public class UserController {
         User newUser = service.createUser(user);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(user.getId()).toUri();
         return ResponseEntity.created(uri).body(newUser);
+    }
+
+    @PostMapping("login")
+    public ResponseEntity<Optional<User>> login(@RequestBody User user){
+        Optional<User> searchUser = service.Login(user);
+        if(searchUser.isEmpty()){
+            return null;
+        }
+        if(searchUser.get().comparePassword(user.getPassword())) {
+            return ResponseEntity.ok().body(searchUser);
+        }else return null;
     }
 
 }
