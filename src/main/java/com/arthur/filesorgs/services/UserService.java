@@ -4,6 +4,7 @@ import com.arthur.filesorgs.db.DB;
 import com.arthur.filesorgs.entities.User;
 import com.arthur.filesorgs.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
@@ -20,6 +21,9 @@ public class UserService {
     @Autowired
     private UserRepository repository;
 
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
+
     public List<User> findAll(){
         Statement st = null;
         try{
@@ -34,6 +38,7 @@ public class UserService {
     public User createUser(User user){
         User newUser = new User(user.getName(), user.getEmail(), user.getPassword());
         PreparedStatement st = null;
+        newUser.setPassword(passwordEncoder.encode(user.getPassword()));
         try{
             st = connection.prepareStatement(
                     "INSERT INTO users"+"(name, email, password, id)"+"VALUES"+"(?, ?, ?, ?)"
@@ -63,5 +68,9 @@ public class UserService {
             throw new RuntimeException(e);
         }
         return null;
+    }
+
+    public boolean comparePassword(String password, String encodedPassword){
+        return passwordEncoder.matches(password, encodedPassword);
     }
 }
